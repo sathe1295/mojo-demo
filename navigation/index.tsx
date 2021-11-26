@@ -3,15 +3,13 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { FontAwesome } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { ColorSchemeName, Pressable, Image, ImageSourcePropType, ImageProps, View } from 'react-native';
+import { Image, ImageSourcePropType, ImageProps, View } from 'react-native';
 
-import Colors from '../constants/Colors';
-import useColorScheme from '../hooks/useColorScheme';
+import { ORCA } from '../constants/Colors';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import TodayTabScreen from '../screens/TodayTabScreen';
@@ -22,11 +20,10 @@ import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../typ
 import LinkingConfiguration from './LinkingConfiguration';
 import { CONNECT_TAB_ICON, EXPLORE_TAB_ICON, FAVOURITES_TAB_ICON, TODAY_TAB_ICON, USER_AVATAR } from '../assets/images';
 
-export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
+export default function Navigation() {
   return (
     <NavigationContainer
-      linking={LinkingConfiguration}
-      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      linking={LinkingConfiguration}>
       <RootNavigator />
     </NavigationContainer>
   );
@@ -57,25 +54,26 @@ function RootNavigator() {
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
-  const colorScheme = useColorScheme();
 
   return (
     <BottomTab.Navigator
       initialRouteName="TodayTab"
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme].orca,
+        tabBarActiveTintColor: ORCA,
       }}>
       <BottomTab.Screen
         name="TodayTab"
         component={TodayTabScreen}
         options={({ navigation }: RootTabScreenProps<'TodayTab'>) => ({
+          title: 'Today',
           headerStyle: {
-            backgroundColor: Colors[colorScheme].orca,
+            backgroundColor: ORCA,
+            shadowColor: 'transparent'
           },
           tabBarIcon: ({ color }) => <TabBarIcon name={TODAY_TAB_ICON} color={color} />,
           headerRight: () => (
             <View style={{marginRight: 19}}>
-               <Image source={USER_AVATAR}/>
+               <Image source={USER_AVATAR} height={20} width={20}/>
             </View>
           ),
         })}

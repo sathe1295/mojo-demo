@@ -1,21 +1,6 @@
-const tintColorLight = '#2f95dc';
-const tintColorDark = '#fff';
 
-export default {
-  light: {
-    text: '#000',
-    background: '#fff',
-    tint: tintColorLight,
-    tabIconDefault: '#ccc',
-    tabIconSelected: tintColorLight,
-    orca: "#101725"
-  },
-  dark: {
-    text: '#fff',
-    background: '#000',
-    tint: tintColorDark,
-    tabIconDefault: '#ccc',
-    tabIconSelected: tintColorDark,
-    orca: "#101725"
-  },
-};
+export const ORCA= "#101725"
+export const BELUGA = "#FFFFFF"
+export const SILVER = "#98A0D0"
+export const DOLPHIN = "#EFF3FE"
+export const PROGRESS_BAR_UNFILLED = "#202537"
