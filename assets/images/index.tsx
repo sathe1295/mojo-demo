@@ -1,0 +1,5 @@
+export const TODAY_TAB_ICON = require("./today.png")
+export const EXPLORE_TAB_ICON = require("./explore.png")
+export const FAVOURITES_TAB_ICON = require("./favourite.png")
+export const CONNECT_TAB_ICON = require("./connect.png")
+export const USER_AVATAR = require("./user_avatar.png")

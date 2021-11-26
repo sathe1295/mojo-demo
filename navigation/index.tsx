@@ -8,16 +8,19 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { ColorSchemeName, Pressable } from 'react-native';
+import { ColorSchemeName, Pressable, Image, ImageSourcePropType, ImageProps, View } from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
-import TabOneScreen from '../screens/TabOneScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
+import TodayTabScreen from '../screens/TodayTabScreen';
+import ExploreTabScreen from '../screens/ExploreTabScreen';
+import FavouritesTabScreen from '../screens/FavouritesTabScreen';
+import ConnectTabScreen from "../screens/ConnectTabScreen";
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
+import { CONNECT_TAB_ICON, EXPLORE_TAB_ICON, FAVOURITES_TAB_ICON, TODAY_TAB_ICON, USER_AVATAR } from '../assets/images';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -58,38 +61,47 @@ function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="TodayTab"
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme].tint,
+        tabBarActiveTintColor: Colors[colorScheme].orca,
       }}>
       <BottomTab.Screen
-        name="TabOne"
-        component={TabOneScreen}
-        options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        name="TodayTab"
+        component={TodayTabScreen}
+        options={({ navigation }: RootTabScreenProps<'TodayTab'>) => ({
+          headerStyle: {
+            backgroundColor: Colors[colorScheme].orca,
+          },
+          tabBarIcon: ({ color }) => <TabBarIcon name={TODAY_TAB_ICON} color={color} />,
           headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate('Modal')}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}>
-              <FontAwesome
-                name="info-circle"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
+            <View style={{marginRight: 19}}>
+               <Image source={USER_AVATAR}/>
+            </View>
           ),
         })}
       />
       <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoScreen}
+        name="ExploreTab"
+        component={ExploreTabScreen}
         options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: 'Explore',
+          tabBarIcon: ({ color }) => <TabBarIcon name={EXPLORE_TAB_ICON} color={color} />,
+        }}
+      />
+       <BottomTab.Screen
+        name="FavouritesTab"
+        component={FavouritesTabScreen}
+        options={{
+          title: 'Favourites',
+          tabBarIcon: ({ color }) => <TabBarIcon name={FAVOURITES_TAB_ICON} color={color} />,
+        }}
+      />
+       <BottomTab.Screen
+        name="ConnectTab"
+        component={ConnectTabScreen}
+        options={{
+          title: 'Connect',
+          tabBarIcon: ({ color }) => <TabBarIcon name={CONNECT_TAB_ICON} color={color} />,
         }}
       />
     </BottomTab.Navigator>
@@ -100,8 +112,9 @@ function BottomTabNavigator() {
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
  */
 function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
+  name: ImageProps | ImageSourcePropType;
   color: string;
 }) {
-  return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
+  // return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
+  return <Image source={props.name}/>
 }
