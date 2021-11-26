@@ -1,27 +1,82 @@
 import * as React from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, FlatList } from "react-native";
 import { PENCIL } from "../assets/images";
 import ProgressBar from "../components/ProgressBar";
-import { BELUGA, DOLPHIN, ORCA, PROGRESS_BAR_UNFILLED, SILVER } from "../constants/Colors";
+import TaskBubble from "../components/TaskBubble";
+import {
+  BELUGA,
+  DOLPHIN,
+  ORCA,
+  PROGRESS_BAR_UNFILLED,
+  SILVER,
+} from "../constants/Colors";
 import { RootTabScreenProps } from "../types";
+
+type task = {
+  taskCategory: string
+  taskDuration: string
+  taskText: string
+}
 
 export default function TodayTabScreen({
   navigation,
 }: RootTabScreenProps<"TodayTab">) {
-  return (
-    <View style={styles.container}>
+  const tasks:Array<task> = [
+    {
+      taskCategory: "Read",
+      taskDuration: "10 min",
+      taskText: "How porn affects your confidence"
+    },
+    {
+      taskCategory: "Listen",
+      taskDuration: "9 min",
+      taskText: "Create positive views of your erections"
+    }
+  ]
+  const renderGoalContainer = () => {
+    return (
       <View style={styles.goalContainer}>
         <Text style={styles.currentGoal}>Your current goal</Text>
         <View style={styles.row}>
-        <Text style={styles.feelConfident}>Feel more confident</Text>
-        <Image source={PENCIL} resizeMode="contain" style={styles.pencil}/>
+          <Text style={styles.feelConfident}>Feel more confident</Text>
+          <Image source={PENCIL} style={styles.pencil} height={17} width={17}/>
         </View>
-        <ProgressBar progress={0.15} width={216} style={styles.progressBar} color={DOLPHIN}  unfilledColor={PROGRESS_BAR_UNFILLED}/>
+        <ProgressBar
+          progress={0.15}
+          width={216}
+          style={styles.progressBar}
+          color={DOLPHIN}
+          unfilledColor={PROGRESS_BAR_UNFILLED}
+        />
         <Text style={styles.daysCompleted}>1 / 7 days completed</Text>
       </View>
+    );
+  };
+
+  const renderTaskContainer = () => {
+    return(
       <View style={styles.taskContainer}>
-        <Text>Tasks</Text>
+      <View style={styles.taskSubContainer}>
+        <Text style={styles.day}>Day 1</Text>
+        <FlatList 
+        data={tasks}
+        keyExtractor={(item,index) => `item${index}`}
+        renderItem={({ item, index }) => {
+          return (
+            <View  key={index} style={styles.bubbleContainer}>
+            <TaskBubble  color={DOLPHIN} taskCategory={item.taskCategory} taskDuration={item.taskDuration} task={item.taskText}/>
+          </View>
+          )
+        }}
+        />
       </View>
+      </View>
+    )
+  }
+  return (
+    <View style={styles.container}>
+      {renderGoalContainer()}
+      {renderTaskContainer()}
     </View>
   );
 }
@@ -29,7 +84,7 @@ export default function TodayTabScreen({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: BELUGA
+    backgroundColor: BELUGA,
   },
   title: {
     fontSize: 20,
@@ -63,23 +118,36 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-    alignItems:"baseline"
+    alignItems: "baseline",
   },
   pencil: {
-    marginLeft:16
+    marginLeft: 16,
   },
   progressBar: {
     marginLeft: 16,
-    borderWidth:0.2,
+    borderWidth: 0.2,
     borderColor: SILVER,
-    marginTop:24,
-    borderRadius:5
+    marginTop: 24,
+    borderRadius: 5,
   },
   daysCompleted: {
     marginTop: 16,
     color: BELUGA,
     fontSize: 14,
     fontWeight: "400",
-    marginLeft: 16
+    marginLeft: 16,
+  },
+  taskSubContainer: {
+    marginHorizontal: 16
+  },
+  day: {
+    fontSize: 24,
+    fontWeight: "700",
+    color: ORCA,
+    marginTop: 32,
+    marginBottom: 20
+  },
+  bubbleContainer: {
+    marginBottom:12
   }
 });
