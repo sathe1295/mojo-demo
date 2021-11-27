@@ -1,6 +1,7 @@
 import * as React from "react";
 import { StyleSheet, Text, View, Image, FlatList } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+import { fetchpoll } from "../apis/polls";
 import { PENCIL } from "../assets/images";
 import FooterPopup from "../components/FooterPopup";
 import ProgressBar from "../components/ProgressBar";
@@ -14,7 +15,7 @@ import {
   SILVER,
 } from "../constants/Colors";
 import { RootState } from "../reducers/rootReducer";
-import { fetchpoll } from "../slices/pollSlice";
+import { setShowNotification } from "../slices/pollSlice";
 import { RootTabScreenProps } from "../types";
 
 type task = {
@@ -26,9 +27,10 @@ type task = {
 export default function TodayTabScreen({
   navigation,
 }: RootTabScreenProps<"TodayTab">) {
-  const poll = useSelector((state: RootState) => state.polls);
+  const showNotification = useSelector(
+    (state: RootState) => state.polls.showNotification
+  );
 
-  const [showFooter, setShowFooter] = React.useState<boolean>(false);
   const dispatch = useDispatch();
   const tasks: Array<task> = [
     {
@@ -45,10 +47,7 @@ export default function TodayTabScreen({
 
   React.useEffect(() => {
     dispatch(fetchpoll());
-    if (poll.id !== "") {
-      setShowFooter(true);
-    }
-  }, [poll, setShowFooter]);
+  }, []);
 
   const renderGoalContainer = () => {
     return (
@@ -97,8 +96,7 @@ export default function TodayTabScreen({
   };
 
   const onFooterClose = () => {
-    console.log("close");
-    setShowFooter(false);
+    dispatch(setShowNotification(false));
   };
 
   const renderFooter = () => {
@@ -116,7 +114,7 @@ export default function TodayTabScreen({
     <View style={styles.container}>
       {renderGoalContainer()}
       {renderTaskContainer()}
-      {showFooter ? renderFooter() : null}
+      {showNotification ? renderFooter() : null}
     </View>
   );
 }

@@ -1,13 +1,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-import { AppThunk, AppDispatch } from "../store";
 import { Poll } from "../types/index";
 
-const initialState: Poll = {
-  id: "",
-  responseCount: 0,
-  question: "",
-  answerOptions: [],
+type InitialState = {
+  showNotification: boolean;
+  poll: Poll;
+};
+const initialState: InitialState = {
+  showNotification: false,
+  poll: {
+    id: "",
+    responseCount: 0,
+    answerOptions: [],
+    question: "",
+  },
 };
 
 const pollSlice = createSlice({
@@ -16,10 +21,17 @@ const pollSlice = createSlice({
   reducers: {
     setPoll(state, action: PayloadAction<Poll>) {
       console.log("action", action.payload);
-      state.id = action.payload.id;
-      state.responseCount = action.payload.responseCount;
-      state.question = action.payload.question;
-      state.answerOptions = action.payload.answerOptions;
+      state.poll = action.payload;
+      if (action.payload.id !== "") {
+        state.showNotification = true;
+      }
+      //   state.id = action.payload.id;
+      //   state.responseCount = action.payload.responseCount;
+      //   state.question = action.payload.question;
+      //   state.answerOptions = action.payload.answerOptions;
+    },
+    setShowNotification(state, action: PayloadAction<boolean>) {
+      state.showNotification = action.payload;
     },
     // toggleTodo(state, action: PayloadAction<Poll>) {
     //     let todo = state.find(todo => todo.id === action.payload.id);
@@ -31,26 +43,6 @@ const pollSlice = createSlice({
   },
 });
 
-export const { setPoll } = pollSlice.actions;
-
-export const fetchpoll = (): AppThunk => async (dispatch: AppDispatch) => {
-  const fetchPollUrl = "https://api.jsonbin.io/b/619254c40ddbee6f8b0bc2af";
-
-  console.log("call");
-  try {
-    let res = await fetch(fetchPollUrl, {
-      method: "GET",
-    });
-    if (res.status === 200) {
-      let json = await res.json();
-      let data = JSON.stringify(json);
-      dispatch(setPoll(JSON.parse(data)));
-    } else {
-      alert("Something went wrong");
-    }
-  } catch (e) {
-    return console.error(e.message);
-  }
-};
+export const { setPoll, setShowNotification } = pollSlice.actions;
 
 export default pollSlice.reducer;
