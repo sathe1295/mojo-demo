@@ -1,5 +1,6 @@
 import * as React from "react";
 import { StyleSheet, Text, View, Image, FlatList } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import { PENCIL } from "../assets/images";
 import FooterPopup from "../components/FooterPopup";
 import ProgressBar from "../components/ProgressBar";
@@ -12,6 +13,8 @@ import {
   PROGRESS_BAR_UNFILLED,
   SILVER,
 } from "../constants/Colors";
+import { RootState } from "../reducers/rootReducer";
+import { fetchpoll } from "../slices/pollSlice";
 import { RootTabScreenProps } from "../types";
 
 type task = {
@@ -23,7 +26,10 @@ type task = {
 export default function TodayTabScreen({
   navigation,
 }: RootTabScreenProps<"TodayTab">) {
-  const [showFooter, setShowFooter] = React.useState<boolean>(true);
+  const poll = useSelector((state: RootState) => state.polls);
+
+  const [showFooter, setShowFooter] = React.useState<boolean>(false);
+  const dispatch = useDispatch();
   const tasks: Array<task> = [
     {
       taskCategory: "Read",
@@ -36,6 +42,14 @@ export default function TodayTabScreen({
       taskText: "Create positive views of your erections",
     },
   ];
+
+  React.useEffect(() => {
+    dispatch(fetchpoll());
+    if (poll.id !== "") {
+      setShowFooter(true);
+    }
+  }, [poll, setShowFooter]);
+
   const renderGoalContainer = () => {
     return (
       <View style={styles.goalContainer}>
