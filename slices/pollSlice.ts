@@ -1,9 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Poll, PollResponse } from "../types/index";
+import {
+  Poll,
+  PollResponse,
+  PollResult,
+  PollResultResponse,
+} from "../types/index";
 
 type InitialState = {
   showNotification: boolean;
   poll: Poll;
+  pollResults: PollResult;
 };
 const initialState: InitialState = {
   showNotification: false,
@@ -13,6 +19,16 @@ const initialState: InitialState = {
     answerOptions: [],
     question: "",
   },
+  pollResults: {
+    responseCount: 0,
+    answerStats: {
+      always: 0,
+      most: 0,
+      half: 0,
+      rarely: 0,
+      never: 0,
+    },
+  },
 };
 
 const pollSlice = createSlice({
@@ -21,10 +37,10 @@ const pollSlice = createSlice({
   reducers: {
     setPoll(state, action: PayloadAction<PollResponse>) {
       state.poll.id = action.payload.id;
-      state.poll.question= action.payload.question_text
-      state.poll.responseCount= action.payload.response_count
-      state.poll.answerOptions=action.payload.answers_options
-    console.log("action", state.poll)
+      state.poll.question = action.payload.question_text;
+      state.poll.responseCount = action.payload.response_count;
+      state.poll.answerOptions = action.payload.answers_options;
+      console.log("action", state.poll);
       if (action.payload.id !== "") {
         state.showNotification = true;
       }
@@ -32,16 +48,14 @@ const pollSlice = createSlice({
     setShowNotification(state, action: PayloadAction<boolean>) {
       state.showNotification = action.payload;
     },
-    // toggleTodo(state, action: PayloadAction<Poll>) {
-    //     let todo = state.find(todo => todo.id === action.payload.id);
-
-    //     if (todo) {
-    //         todo.completed = !todo.completed;
-    //     }
-    // },
+    setPollResult(state, action: PayloadAction<PollResultResponse>) {
+      state.pollResults.responseCount = action.payload.response_count;
+      state.pollResults.answerStats = action.payload.answer_stats;
+    },
   },
 });
 
-export const { setPoll, setShowNotification } = pollSlice.actions;
+export const { setPoll, setShowNotification, setPollResult } =
+  pollSlice.actions;
 
 export default pollSlice.reducer;

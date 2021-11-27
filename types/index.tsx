@@ -15,3 +15,19 @@ export type PollResponse = {
     question_text: string
     answers_options: Array<Answer>
 }
+
+export type AnswerStat={
+    always: number,
+    most: number,
+    half: number
+    rarely: number
+    never: number
+}
+export type PollResult = {
+    responseCount:number,
+    answerStats: AnswerStat
+}
+export type PollResultResponse = {
+    response_count:number,
+    answer_stats: AnswerStat
+}
