@@ -2,7 +2,6 @@ import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
 import { StyleSheet, TouchableOpacity,Text, View } from 'react-native';
 
-import { MonoText } from './StyledText';
 
 export default function EditScreenInfo({ path }: { path: string }) {
   return (
@@ -15,7 +14,7 @@ export default function EditScreenInfo({ path }: { path: string }) {
 
         <View
           style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
-          <MonoText>{path}</MonoText>
+          <Text>{path}</Text>
         </View>
 
         <Text

@@ -1,10 +1,12 @@
 import * as React from "react";
 import { StyleSheet, Text, View, Image, FlatList } from "react-native";
 import { PENCIL } from "../assets/images";
+import FooterPopup from "../components/FooterPopup";
 import ProgressBar from "../components/ProgressBar";
 import TaskBubble from "../components/TaskBubble";
 import {
   BELUGA,
+  BLUE,
   DOLPHIN,
   ORCA,
   PROGRESS_BAR_UNFILLED,
@@ -13,33 +15,34 @@ import {
 import { RootTabScreenProps } from "../types";
 
 type task = {
-  taskCategory: string
-  taskDuration: string
-  taskText: string
-}
+  taskCategory: string;
+  taskDuration: string;
+  taskText: string;
+};
 
 export default function TodayTabScreen({
   navigation,
 }: RootTabScreenProps<"TodayTab">) {
-  const tasks:Array<task> = [
+  const [showFooter, setShowFooter] = React.useState<boolean>(true);
+  const tasks: Array<task> = [
     {
       taskCategory: "Read",
       taskDuration: "10 min",
-      taskText: "How porn affects your confidence"
+      taskText: "How porn affects your confidence",
     },
     {
       taskCategory: "Listen",
       taskDuration: "9 min",
-      taskText: "Create positive views of your erections"
-    }
-  ]
+      taskText: "Create positive views of your erections",
+    },
+  ];
   const renderGoalContainer = () => {
     return (
       <View style={styles.goalContainer}>
         <Text style={styles.currentGoal}>Your current goal</Text>
         <View style={styles.row}>
           <Text style={styles.feelConfident}>Feel more confident</Text>
-          <Image source={PENCIL} style={styles.pencil} height={17} width={17}/>
+          <Image source={PENCIL} style={styles.pencil} height={17} width={17} />
         </View>
         <ProgressBar
           progress={0.15}
@@ -54,29 +57,52 @@ export default function TodayTabScreen({
   };
 
   const renderTaskContainer = () => {
-    return(
+    return (
       <View style={styles.taskContainer}>
-      <View style={styles.taskSubContainer}>
-        <Text style={styles.day}>Day 1</Text>
-        <FlatList 
-        data={tasks}
-        keyExtractor={(item,index) => `item${index}`}
-        renderItem={({ item, index }) => {
-          return (
-            <View  key={index} style={styles.bubbleContainer}>
-            <TaskBubble  color={DOLPHIN} taskCategory={item.taskCategory} taskDuration={item.taskDuration} task={item.taskText}/>
-          </View>
-          )
-        }}
-        />
+        <View style={styles.taskSubContainer}>
+          <Text style={styles.day}>Day 1</Text>
+          <FlatList
+            data={tasks}
+            keyExtractor={(item, index) => `item${index}`}
+            renderItem={({ item, index }) => {
+              return (
+                <View key={index} style={styles.bubbleContainer}>
+                  <TaskBubble
+                    color={DOLPHIN}
+                    taskCategory={item.taskCategory}
+                    taskDuration={item.taskDuration}
+                    task={item.taskText}
+                  />
+                </View>
+              );
+            }}
+          />
+        </View>
       </View>
-      </View>
-    )
-  }
+    );
+  };
+
+  const onFooterClose = () => {
+    console.log("close");
+    setShowFooter(false);
+  };
+
+  const renderFooter = () => {
+    return (
+      <FooterPopup
+        bg={BLUE}
+        text={"Mojo’s daily poll 📅"}
+        clickableText={"Open"}
+        onTextClick={() => navigation.navigate("Modal")}
+        onClose={onFooterClose}
+      />
+    );
+  };
   return (
     <View style={styles.container}>
       {renderGoalContainer()}
       {renderTaskContainer()}
+      {showFooter ? renderFooter() : null}
     </View>
   );
 }
@@ -138,16 +164,16 @@ const styles = StyleSheet.create({
     marginLeft: 16,
   },
   taskSubContainer: {
-    marginHorizontal: 16
+    marginHorizontal: 16,
   },
   day: {
     fontSize: 24,
     fontWeight: "700",
     color: ORCA,
     marginTop: 32,
-    marginBottom: 20
+    marginBottom: 20,
   },
   bubbleContainer: {
-    marginBottom:12
-  }
+    marginBottom: 12,
+  },
 });
