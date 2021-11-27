@@ -20,7 +20,7 @@ export const fetchpoll = (): AppThunk => async (dispatch: AppDispatch) => {
 };
 
 export const vote =
-  (slug: string): AppThunk =>
+  (slug: string | null): AppThunk =>
   async (dispatch: AppDispatch) => {
     try {
       let res = await fetch(

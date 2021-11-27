@@ -29,7 +29,6 @@ export default function ModalScreen() {
         if (item.text === choiceData.choice) {
           console.log("pollasdasd", pollResult.answerStats);
           for (let key in pollResult.answerStats) {
-
             //had to do this as it due to error :"type string can't be used to index"
             if (item.slug === key) {
               choiceData.votes =
@@ -53,6 +52,11 @@ export default function ModalScreen() {
     });
     setChoice(choice);
   };
+
+  const onVote = (slug: string | null) => {
+    dispatch(vote(slug));
+    updatePollData();
+  };
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -69,8 +73,7 @@ export default function ModalScreen() {
           onChoicePress={(selectedChoice: IChoice) =>
             poll.answerOptions.map((item) => {
               if (item.text === selectedChoice.choice) {
-                dispatch(vote(item.slug));
-                updatePollData();
+                onVote(item.slug);
               }
             })
           }
@@ -78,8 +81,14 @@ export default function ModalScreen() {
           choiceTextStyle={styles.choiceText}
           fillBackgroundColor={POLL_BG}
         />
-        <Text>{poll.responseCount} responses</Text>
-        <Text>I don't want to answer</Text>
+        <View style={styles.responseCountContainer}>
+          <Text style={styles.responseCount}>
+            {poll.responseCount} responses
+          </Text>
+          <TouchableOpacity onPress={() => onVote(null)}>
+            <Text style={styles.skip}>I don't want to answer</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -111,5 +120,20 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     fontSize: 18,
     color: ORCA,
+  },
+  responseCount: {
+    fontSize: 16,
+    color: ORCA,
+  },
+  responseCountContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 20,
+  },
+  skip: {
+    marginTop: 40,
+    fontSize: 16,
+    color: ORCA,
+    textDecorationLine: "underline",
   },
 });
