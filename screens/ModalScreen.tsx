@@ -6,11 +6,13 @@ import { CLOSE_DARK } from "../assets/images";
 import RNPoll, { IChoice } from "react-native-poll";
 import { ORCA, POLL_BG } from "../constants/Colors";
 import { RootState } from "../reducers/rootReducer";
-import { Poll } from "../types/index";
+import { AnswerStat, Poll } from "../types/index";
 import { vote } from "../apis/polls";
 
 export default function ModalScreen() {
   const poll: Poll = useSelector((state: RootState) => state.polls.poll);
+  const pollResult = useSelector((state: RootState) => state.polls.pollResults);
+
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [choice, setChoice] = React.useState<Array<IChoice>>([]);
@@ -19,7 +21,26 @@ export default function ModalScreen() {
     createPollData();
   }, []);
 
-  console.log("modal poll", poll);
+  const updatePollData = () => {
+    //This entire function needs to be optimized
+    let newChoice = choice;
+    newChoice.map((choiceData) => {
+      poll.answerOptions.map((item) => {
+        if (item.text === choiceData.choice) {
+          console.log("pollasdasd", pollResult.answerStats);
+          for (let key in pollResult.answerStats) {
+
+            //had to do this as it due to error :"type string can't be used to index"
+            if (item.slug === key) {
+              choiceData.votes =
+                pollResult.answerStats[key as keyof AnswerStat];
+            }
+          }
+        }
+      });
+    });
+    setChoice(newChoice);
+  };
   const createPollData = () => {
     let choice: Array<IChoice> = [];
     poll.answerOptions.map((item, index) => {
@@ -49,6 +70,7 @@ export default function ModalScreen() {
             poll.answerOptions.map((item) => {
               if (item.text === selectedChoice.choice) {
                 dispatch(vote(item.slug));
+                updatePollData();
               }
             })
           }

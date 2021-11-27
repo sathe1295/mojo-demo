@@ -50,7 +50,11 @@ const pollSlice = createSlice({
     },
     setPollResult(state, action: PayloadAction<PollResultResponse>) {
       state.pollResults.responseCount = action.payload.response_count;
-      state.pollResults.answerStats = action.payload.answer_stats;
+      state.pollResults.answerStats.always = action.payload.answer_stats.always;
+      state.pollResults.answerStats.most = action.payload.answer_stats.most;
+      state.pollResults.answerStats.half = action.payload.answer_stats.half;
+      state.pollResults.answerStats.rarely = action.payload.answer_stats.rarely;
+      state.pollResults.answerStats.never = action.payload.answer_stats.never;
     },
   },
 });
