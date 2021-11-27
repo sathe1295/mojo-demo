@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Poll } from "../types/index";
+import { Poll, PollResponse } from "../types/index";
 
 type InitialState = {
   showNotification: boolean;
@@ -19,16 +19,15 @@ const pollSlice = createSlice({
   name: "polls",
   initialState,
   reducers: {
-    setPoll(state, action: PayloadAction<Poll>) {
-      console.log("action", action.payload);
-      state.poll = action.payload;
+    setPoll(state, action: PayloadAction<PollResponse>) {
+      state.poll.id = action.payload.id;
+      state.poll.question= action.payload.question_text
+      state.poll.responseCount= action.payload.response_count
+      state.poll.answerOptions=action.payload.answers_options
+    console.log("action", state.poll)
       if (action.payload.id !== "") {
         state.showNotification = true;
       }
-      //   state.id = action.payload.id;
-      //   state.responseCount = action.payload.responseCount;
-      //   state.question = action.payload.question;
-      //   state.answerOptions = action.payload.answerOptions;
     },
     setShowNotification(state, action: PayloadAction<boolean>) {
       state.showNotification = action.payload;

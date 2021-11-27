@@ -9,3 +9,9 @@ export type Poll = {
     question: string
     answerOptions: Array<Answer>
 } 
+export type PollResponse = {
+    id: string,
+    response_count: number,
+    question_text: string
+    answers_options: Array<Answer>
+}
