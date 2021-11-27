@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     backgroundColor: ORCA,
   },
   taskContainer: {
-    flex: 3.5,
+    flex: 3,
   },
   currentGoal: {
     fontSize: 16,

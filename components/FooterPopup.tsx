@@ -22,7 +22,12 @@ export default function FooterPopup({
       <View style={styles.textContainer}>
         <Text style={styles.text}>{text}</Text>
         {clickableText && onTextClick ? (
-          <TouchableOpacity onPress={() => onTextClick()}>
+          <TouchableOpacity
+            accessible={true}
+            accessibilityLabel="Tap me"
+            accessibilityHint="Opens the poll popup"
+            onPress={() => onTextClick()}
+          >
             <Text style={[styles.text, { textDecorationLine: "underline" }]}>
               {clickableText}
             </Text>
@@ -31,6 +36,8 @@ export default function FooterPopup({
       </View>
       <View style={styles.close}>
         <TouchableOpacity
+          accessibilityLabel="Close me"
+          accessibilityHint="Removes the poll footer component from the screen"
           onPress={() => {
             onClose();
           }}
