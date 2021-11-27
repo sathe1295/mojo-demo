@@ -1,15 +1,12 @@
 import * as React from 'react';
 import { StyleSheet,Text,View } from 'react-native';
-
-import EditScreenInfo from '../components/EditScreenInfo';
 import { BELUGA } from '../constants/Colors';
 
 export default function FavouritesTabScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab Two</Text>
+      <Text style={styles.title}>Tab Three</Text>
       <View style={styles.separator}  />
-      <EditScreenInfo path="/screens/FavouritesTabScreen.tsx" />
     </View>
   );
 }

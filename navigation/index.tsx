@@ -11,7 +11,6 @@ import { Image, ImageSourcePropType, ImageProps, View } from 'react-native';
 
 import { ORCA } from '../constants/Colors';
 import ModalScreen from '../screens/ModalScreen';
-import NotFoundScreen from '../screens/NotFoundScreen';
 import TodayTabScreen from '../screens/TodayTabScreen';
 import ExploreTabScreen from '../screens/ExploreTabScreen';
 import FavouritesTabScreen from '../screens/FavouritesTabScreen';
@@ -39,7 +38,6 @@ function RootNavigator() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
-      <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen}  options={{ headerShown: false }}/>
       </Stack.Group>
@@ -70,6 +68,7 @@ function BottomTabNavigator() {
             backgroundColor: ORCA,
             shadowColor: 'transparent'
           },
+          headerTitle:"",
           tabBarIcon: ({ color }) => <TabBarIcon name={TODAY_TAB_ICON} color={color} />,
           headerRight: () => (
             <View style={{marginRight: 19}}>

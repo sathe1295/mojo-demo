@@ -60,6 +60,8 @@ export default function ModalScreen() {
   return (
     <View style={styles.container}>
       <TouchableOpacity
+        accessibilityLabel="Close me"
+        accessibilityHint="Closes the poll screen"
         onPress={() => navigation.goBack()}
         style={styles.close}
       >
@@ -85,7 +87,11 @@ export default function ModalScreen() {
           <Text style={styles.responseCount}>
             {poll.responseCount} responses
           </Text>
-          <TouchableOpacity onPress={() => onVote(null)}>
+          <TouchableOpacity
+            accessibilityLabel="Skip question"
+            accessibilityHint="Skips the question"
+            onPress={() => onVote(null)}
+          >
             <Text style={styles.skip}>I don't want to answer</Text>
           </TouchableOpacity>
         </View>
